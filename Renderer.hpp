@@ -26,6 +26,8 @@
 class Renderer
 {
 public:
+
+	static constexpr const u32 VertexBufferLength = 64 * 1024;
     
     struct Vertex
     {
@@ -67,7 +69,10 @@ public:
     void poll_events();
     
     void draw_shaded_triangle(Vertex (&vertices)[3], Color (&colors)[3]);
+	void draw_shaded_quad(Vertex (&vertices)[4], Color (&colors)[4]);
     
+	void set_draw_offset(s16 x, s16 y);
+	
     void draw();
     
 private:
@@ -81,36 +86,41 @@ private:
     GLuint m_vao { 0 };
     u32 m_vertices_count { 0 };
     
-    GLBuffer<Vertex> m_vertices;
-    GLBuffer<Color>  m_colors;
+    GLBuffer<Vertex, VertexBufferLength> m_vertices;
+    GLBuffer<Color, VertexBufferLength>  m_colors;
     
     ShaderProgram m_primitive_shader;
     
     static constexpr const char* m_primitive_shader_frag =
     R"(
-	#version 120
+	#version 330 core
 	
-    varying vec3 color;
+    in vec3 color;
+	out vec4 frag_color;
     
     void main()
     {
-        gl_FragColor = vec4(color, 1.0);
+        frag_color = vec4(color, 1.0);
     }
     )";
     
     static constexpr const char* m_primitive_shader_vert =
     R"(
-	#version 120
+	#version 330 core
 	
-    attribute vec2 vertex_position;
-    attribute vec3 vertex_color;
+    in ivec2 vertex_position;
+    in uvec3 vertex_color;
     
-    varying vec3 color;
+    out vec3 color;
+	
+	uniform ivec2 offset;
     
     void main()
     {
-        float xpos = (float(vertex_position.x) / 512.0) - 1.0;
-        float ypos = 1.0 - (float(vertex_position.y) / 256.0);
+		ivec2 position = vertex_position + offset;
+		
+        float xpos = (float(position.x) / 512.0) - 1.0;
+        float ypos = 1.0 - (float(position.y) / 256.0);
         
         gl_Position = vec4(xpos, ypos, 0.0, 1.0);
         

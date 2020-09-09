@@ -66,27 +66,6 @@ void CPU::exec()
     m_load_operation.second = 0;
     m_regs.first_last_changed_reg = m_regs.second_last_changed_reg;
     
-    /*static u64 executed_ins = 0;
-    static bool start_log = false;
-    
-    if(m_curr_instruction == 0x87a30018)
-    {
-        start_log = true;
-        m_print_mode = true;
-    }
-    
-    if(start_log)
-    {
-        std::printf("%lld = 0x%08x: [0x%08x] - ", executed_ins, m_curr_pc, m_curr_instruction.raw());
-        
-        executed_ins++;
-    }
-    
-    if(executed_ins == 100000)
-    {
-        assert(false);
-    }*/
-    
     
     (this->*m_base_op_handlers[m_curr_instruction.op()])(m_curr_instruction);
     

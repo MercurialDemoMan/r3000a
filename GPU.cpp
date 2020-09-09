@@ -161,16 +161,48 @@ void GPU::GP0_TEXWIN(GPUInstruction& ins)
 }
 void GPU::GP0_MONOQUAD(GPUInstruction&)
 {
-    std::printf("GPU Warning: Draw Mono Quad unimplemented\n");
+    Renderer::Vertex vertices[4] =
+    {
+        Renderer::Vertex(m_gp0_arguments[1]),
+        Renderer::Vertex(m_gp0_arguments[2]),
+        Renderer::Vertex(m_gp0_arguments[3]),
+		Renderer::Vertex(m_gp0_arguments[4])
+    };
+    
+    Renderer::Color colors[4] =
+    {
+        Renderer::Color(m_gp0_arguments[0]),
+        Renderer::Color(m_gp0_arguments[0]),
+        Renderer::Color(m_gp0_arguments[0]),
+		Renderer::Color(m_gp0_arguments[0])
+    };
+    
+    m_renderer.draw_shaded_quad(vertices, colors);
 }
 void GPU::GP0_TEXBLENDQUAD(GPUInstruction&)
 {
     std::printf("GPU Warning: Draw Textured Quad With Blending unimplemented\n");
+	
+	Renderer::Vertex vertices[4] =
+    {
+        Renderer::Vertex(m_gp0_arguments[1]),
+        Renderer::Vertex(m_gp0_arguments[3]),
+        Renderer::Vertex(m_gp0_arguments[5]),
+		Renderer::Vertex(m_gp0_arguments[7])
+    };
+    
+    Renderer::Color colors[4] =
+    {
+        Renderer::Color(0x80, 0, 0),
+        Renderer::Color(0x80, 0, 0),
+        Renderer::Color(0x80, 0, 0),
+		Renderer::Color(0x80, 0, 0)
+    };
+    
+    m_renderer.draw_shaded_quad(vertices, colors);
 }
 void GPU::GP0_SHADTRI(GPUInstruction&)
 {
-    std::printf("GPU Warning: Draw Shaded Triangle unimplemented\n");
-    
     Renderer::Vertex vertices[3] =
     {
         Renderer::Vertex(m_gp0_arguments[1]),
@@ -189,7 +221,23 @@ void GPU::GP0_SHADTRI(GPUInstruction&)
 }
 void GPU::GP0_SHADQUAD(GPUInstruction&)
 {
-    std::printf("GPU Warning: Draw Shaded Quad unimplemented\n");
+    Renderer::Vertex vertices[4] =
+    {
+        Renderer::Vertex(m_gp0_arguments[1]),
+        Renderer::Vertex(m_gp0_arguments[3]),
+        Renderer::Vertex(m_gp0_arguments[5]),
+		Renderer::Vertex(m_gp0_arguments[7])
+    };
+    
+    Renderer::Color colors[4] =
+    {
+        Renderer::Color(m_gp0_arguments[0]),
+        Renderer::Color(m_gp0_arguments[2]),
+        Renderer::Color(m_gp0_arguments[4]),
+		Renderer::Color(m_gp0_arguments[6])
+    };
+    
+    m_renderer.draw_shaded_quad(vertices, colors);
 }
 void GPU::GP0_DRAWMODE(GPUInstruction& ins)
 {

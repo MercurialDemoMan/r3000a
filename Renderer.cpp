@@ -36,20 +36,22 @@ void Renderer::init()
     
     m_primitive_shader.init(m_primitive_shader_vert, m_primitive_shader_frag);
     
+	m_primitive_shader.use();
+	
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
     
     m_vertices.init();
     
-    s32 vert_idx = m_primitive_shader.get_uniform_index("vertex_position");
+    s32 vert_idx = m_primitive_shader.get_attribute_index("vertex_position");
     glEnableVertexAttribArray(vert_idx);
-    glVertexAttribIPointerEXT(vert_idx, 2, GL_SHORT, 0, nullptr);
+    glVertexAttribIPointer(vert_idx, 2, GL_SHORT, 0, nullptr);
     
     m_colors.init();
     
-    s32 col_idx = m_primitive_shader.get_uniform_index("vertex_color");
+    s32 col_idx = m_primitive_shader.get_attribute_index("vertex_color");
     glEnableVertexAttribArray(col_idx);
-    glVertexAttribIPointerEXT(col_idx, 3, GL_UNSIGNED_BYTE, 0, nullptr);
+    glVertexAttribIPointer(col_idx, 3, GL_UNSIGNED_BYTE, 0, nullptr);
     
     glBindVertexArray(0);
 }
@@ -77,6 +79,11 @@ void Renderer::poll_events()
 
 void Renderer::draw_shaded_triangle(Vertex (&vertices)[3], Color (&colors)[3])
 {
+	if(m_vertices_count + 3 >= VertexBufferLength)
+	{
+		draw();
+	}
+	
     m_vertices[m_vertices_count] = vertices[0];
     m_colors[m_vertices_count++] = colors[0];
     m_vertices[m_vertices_count] = vertices[1];
@@ -85,14 +92,52 @@ void Renderer::draw_shaded_triangle(Vertex (&vertices)[3], Color (&colors)[3])
     m_colors[m_vertices_count++] = colors[2];
 }
 
+void Renderer::draw_shaded_quad(Vertex (&vertices)[4], Color (&colors)[4])
+{
+	if(m_vertices_count + 6 >= VertexBufferLength)
+	{
+		draw();
+	}
+	
+	m_vertices[m_vertices_count] = vertices[0];
+    m_colors[m_vertices_count++] = colors[0];
+    m_vertices[m_vertices_count] = vertices[1];
+    m_colors[m_vertices_count++] = colors[1];
+    m_vertices[m_vertices_count] = vertices[2];
+    m_colors[m_vertices_count++] = colors[2];
+	
+	
+	m_vertices[m_vertices_count] = vertices[1];
+    m_colors[m_vertices_count++] = colors[1];
+    m_vertices[m_vertices_count] = vertices[2];
+    m_colors[m_vertices_count++] = colors[2];
+    m_vertices[m_vertices_count] = vertices[3];
+    m_colors[m_vertices_count++] = colors[3];
+}
+
+void Renderer::set_draw_offset(s16 x, s16 y)
+{
+	draw();
+	
+	m_primitive_shader.set2i(glm::vec2(x, y), "offset");
+}
+
 void Renderer::draw()
 {
     poll_events();
-    
+	
+	m_primitive_shader.use();
     glBindVertexArray(m_vao);
+	//m_vertices.use();
+	//m_colors.use();
+	
     glDrawArrays(GL_TRIANGLES, 0, m_vertices_count);
-    glBindVertexArray(0);
     
+	//m_colors.unuse();
+	//m_vertices.unuse();
+	glBindVertexArray(0);
+	m_primitive_shader.unuse();
+	    
     m_vertices_count = 0;
     
     SDL_GL_SwapWindow(m_window);

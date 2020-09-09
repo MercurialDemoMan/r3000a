@@ -50,6 +50,7 @@ public:
     void set1i(int         value, const char* uniform_name);
     void set1f(float       value, const char* uniform_name);
     void set2f(glm::vec2   value, const char* uniform_name);
+	void set2i(glm::ivec2  value, const char* uniform_name);
     void set3f(glm::vec3   value, const char* uniform_name);
     void set4f(glm::vec4   value, const char* uniform_name);
     void set1b(bool        value, const char* uniform_name);
@@ -62,7 +63,9 @@ public:
     /**
      * \brief get uniform index
      */
-    s32 get_uniform_index(const char* uniform_name);
+    GLuint get_uniform_index(const char* uniform_name);
+	
+	GLuint get_attribute_index(const char* attribute_name);
     
 private:
     u32 m_vertex_shader, m_fragment_shader, m_program;

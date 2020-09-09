@@ -15,47 +15,54 @@
 #endif
 
 
-template<typename T>
+template<typename T, u32 size>
 class GLBuffer
 {
 public:
-    
-    static constexpr u32 VertexBufferLength = 60 * 1024;
     
     GLBuffer() {}
     
     void init()
     {
-        m_raw = new T[VertexBufferLength];
-        
+		constexpr const u32 buffer_size = size * sizeof(T);
+		
         glGenBuffers(1, &m_id);
         glBindBuffer(GL_ARRAY_BUFFER, m_id);
+		glBufferStorage(GL_ARRAY_BUFFER, buffer_size, nullptr, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT);
         
-        memset(m_raw, 0, sizeof(T) * VertexBufferLength);
-
-        upload();
-        
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        
-        m_init = true;
+		m_raw = reinterpret_cast<T*>(glMapBufferRange(GL_ARRAY_BUFFER, 0, buffer_size, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT));
+		
+		memset(m_raw, 0, buffer_size);
+		
+		//glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		m_inited = true;
     }
-    
+
+	void use()
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_id);
+	}
+	
+	void unuse()
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}	
+
     ~GLBuffer()
     {
-        assert(m_init);
-        glDeleteBuffers(1, &m_id);
-        delete[] m_raw;
+		if(m_inited)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, m_id);
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+			glDeleteBuffers(1, &m_id);
+		}
     }
     
     T& operator[](u32 index)
     {
-        assert(index < VertexBufferLength);
+        assert(index < size);
         return m_raw[index];
-    }
-    
-    void upload()
-    {
-        glBufferData(GL_ARRAY_BUFFER, sizeof(T) * VertexBufferLength, m_raw, GL_DYNAMIC_DRAW);
     }
     
     const GLuint id() const { return m_id; }
@@ -64,5 +71,5 @@ public:
 private:
     GLuint m_id   { 0 };
     T*     m_raw  { nullptr };
-    bool   m_init { false };
+	bool   m_inited { false };
 };

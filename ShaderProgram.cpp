@@ -67,6 +67,10 @@ void ShaderProgram::set1f(float value, const char* uniform_name) {
 void ShaderProgram::set2f(glm::vec2 value, const char* uniform_name) {
     glUniform2f(glGetUniformLocation(m_program, uniform_name), value.x, value.y);
 }
+void ShaderProgram::set2i(glm::ivec2 value, const char* uniform_name)
+{
+	glUniform2i(glGetUniformLocation(m_program, uniform_name), value.x, value.y);
+}
 void ShaderProgram::set3f(glm::vec3 value, const char* uniform_name) {
     glUniform3f(glGetUniformLocation(m_program, uniform_name), value.x, value.y, value.z);
 }
@@ -92,7 +96,12 @@ void ShaderProgram::set1iv(int* array, u32 size, const char* uniform_name) {
     glUniform1iv(glGetUniformLocation(m_program, uniform_name), size, array);
 }
 
-s32 ShaderProgram::get_uniform_index(const char* uniform_name)
+GLuint ShaderProgram::get_uniform_index(const char* uniform_name)
 {
     return glGetUniformLocation(m_program, uniform_name);
+}
+
+GLuint ShaderProgram::get_attribute_index(const char* attribute_name)
+{
+	return glGetAttribLocation(m_program, attribute_name);
 }
