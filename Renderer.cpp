@@ -34,7 +34,7 @@ void Renderer::init()
     glClearColor(0, 0, 0, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    m_primitive_shader.init(m_primitive_shader_frag, m_primitive_shader_vert);
+    m_primitive_shader.init(m_primitive_shader_vert, m_primitive_shader_frag);
     
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
@@ -79,9 +79,9 @@ void Renderer::draw_shaded_triangle(Vertex (&vertices)[3], Color (&colors)[3])
 {
     m_vertices[m_vertices_count] = vertices[0];
     m_colors[m_vertices_count++] = colors[0];
-    m_vertices[m_vertices_count] = vertices[0];
+    m_vertices[m_vertices_count] = vertices[1];
     m_colors[m_vertices_count++] = colors[1];
-    m_vertices[m_vertices_count] = vertices[0];
+    m_vertices[m_vertices_count] = vertices[2];
     m_colors[m_vertices_count++] = colors[2];
 }
 

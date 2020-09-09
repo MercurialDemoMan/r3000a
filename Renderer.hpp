@@ -88,26 +88,29 @@ private:
     
     static constexpr const char* m_primitive_shader_frag =
     R"(
-    in vec3 color;
-    out vec4 frag_color;
+	#version 120
+	
+    varying vec3 color;
     
     void main()
     {
-        frag_color = vec4(color, 1.0);
+        gl_FragColor = vec4(color, 1.0);
     }
     )";
     
     static constexpr const char* m_primitive_shader_vert =
     R"(
-    in ivec2 vertex_position;
-    in uvec3 vertex_color;
+	#version 120
+	
+    attribute vec2 vertex_position;
+    attribute vec3 vertex_color;
     
-    out vec3 color;
+    varying vec3 color;
     
     void main()
     {
         float xpos = (float(vertex_position.x) / 512.0) - 1.0;
-        float ypos = 1.0 - (float(vertex_psotion.y) / 256.0);
+        float ypos = 1.0 - (float(vertex_position.y) / 256.0);
         
         gl_Position = vec4(xpos, ypos, 0.0, 1.0);
         

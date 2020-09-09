@@ -9,26 +9,28 @@
 
 void CPU::init(const char* psxexe_path)
 {
-    PSXExecutable exe(psxexe_path);
-    
+    //PSXExecutable exe(psxexe_path);
+	
+	std::printf("LUL\n");
+	
     m_regs.r0  = 0;
-    m_regs.pc  = 0xBFC00000;//exe.pc_init();
+    m_regs.pc  = 0xBFC00000;
     m_regs.npc = m_regs.pc + sizeof(CPUInstruction);
-    m_regs.gp  = 0;//exe.gp_init();
-    m_regs.sp  = 0;//exe.sp_init();
+    m_regs.gp  = 0;
+    m_regs.sp  = 0;
     
     memcpy(m_regs.out, m_regs.raw, sizeof(m_regs.out));
     
     //load program into ram
-    m_mmu.copy_to_vm(exe.text_init(), exe.text_begin(), exe.text_size());
+    //m_mmu.copy_to_vm(exe.text_init(), exe.text_begin(), exe.text_size());
 
     //initialize bios
-    File bios("../scph1001.bin");
+    File bios("scph1001.bin");
     std::vector<u8> bios_content = std::move(bios.read());
     assert(bios_content.size() == 0x80000);
     memcpy(m_mmu.m_bios, &bios_content[0], 0x80000);
     
-    //m_print_mode = true;
+	//m_print_mode = true;
 }
 
 void CPU::run()
@@ -38,7 +40,6 @@ void CPU::run()
         //TODO: handle interrupts
         
         exec();
-        m_gpu.m_renderer.poll_events();
     }
 }
 
