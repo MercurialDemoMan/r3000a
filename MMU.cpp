@@ -35,7 +35,7 @@ if constexpr(t == MemAccessType::Read) { return regs.get(static_cast<u8>(reg)); 
     {
         if(!is_aligned<Width>(virtual_address))
         {
-            std::printf("MMU::mem_access() error: unaligned address [0x%08x -> %ld]\n", virtual_address, sizeof(Width));
+            std::printf("MMU::mem_access() error: unaligned address [0x%08x -> %u]\n", virtual_address, sizeof(Width));
             if constexpr (t == MemAccessType::Read)
             {
                 m_cpu->exception(CPU::Exception::AddressLoad);
@@ -72,6 +72,8 @@ if constexpr(t == MemAccessType::Read) { return regs.get(static_cast<u8>(reg)); 
         case 0x1F000000 ... 0x1F7FFFFF: // Expansion Region 1
         {
             u32 physical_address = virtual_address & 0x007FFFFF;
+			
+			MARK_AS_USED(physical_address);
             
             if constexpr (t == MemAccessType::Read)
             {

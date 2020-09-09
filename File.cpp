@@ -57,7 +57,7 @@ void File::open(const char* path, OpenMode mode/* = Mode::Read*/)
 }
 void File::open(const std::string& path, OpenMode mode/* = Mode::Read*/)
 {
-    open(path.c_str());
+    open(path.c_str(), mode);
 }
 
 /**
@@ -169,7 +169,7 @@ u64 File::read(void* destination, u64 num_bytes)
     */
 std::string File::read_text(u64 num_bytes/* = 0*/)
 {
-    auto data = read();
+    auto&& data = read(num_bytes);
 
     return std::string(data.begin(), data.end());
 }

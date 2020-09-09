@@ -145,12 +145,12 @@ void GPU::GP0_UNK(GPUInstruction& ins)
 }
 void GPU::GP0_NOP(GPUInstruction& ins)
 {
-    (void)ins;
+    MARK_AS_USED(ins);
 }
 void GPU::GP0_CLRCACHE(GPUInstruction& ins)
 {
     std::printf("GPU Warning: Clear Texture Cache unimplemented\n");
-    (void)ins;
+    MARK_AS_USED(ins);
 }
 void GPU::GP0_TEXWIN(GPUInstruction& ins)
 {
@@ -311,7 +311,7 @@ void GPU::GP1_ACKINT(GPUInstruction&)
 {
     m_interrupt = false;
 }
-void GPU::GP1_RST(GPUInstruction& ins)
+void GPU::GP1_RST(GPUInstruction&)
 {
     m_interrupt = 0;
     m_tex_page_base_x = 0;

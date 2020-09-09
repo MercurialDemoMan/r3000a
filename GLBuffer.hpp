@@ -14,7 +14,9 @@
 #include <SDL2/SDL.h>
 #endif
 
-
+/**
+ * shared GPU array buffer object
+ */
 template<typename T, u32 size>
 class GLBuffer
 {
@@ -33,8 +35,6 @@ public:
 		m_raw = reinterpret_cast<T*>(glMapBufferRange(GL_ARRAY_BUFFER, 0, buffer_size, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT));
 		
 		memset(m_raw, 0, buffer_size);
-		
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
 		m_inited = true;
     }
@@ -65,8 +65,8 @@ public:
         return m_raw[index];
     }
     
-    const GLuint id() const { return m_id; }
-    T* data()         const { return m_raw; }
+    GLuint id() const { return m_id; }
+    T* data()   const { return m_raw; }
     
 private:
     GLuint m_id   { 0 };

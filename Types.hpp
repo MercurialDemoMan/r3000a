@@ -12,6 +12,8 @@ using s16 = int16_t;
 using s32 = int32_t;
 using s64 = int64_t;
 
+#define MARK_AS_USED(x) (void)x
+
 enum class Result : u32
 {
     Ok,

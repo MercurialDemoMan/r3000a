@@ -3,15 +3,10 @@
 
 #include <unordered_map>
 
-//#define DEBUG_MEMORY
-
 #define PRINT_INS(...) if(m_print_mode) { std::printf(__VA_ARGS__); }
 
 void CPU::init(const char* psxexe_path)
 {
-    //PSXExecutable exe(psxexe_path);
-	
-	std::printf("LUL\n");
 	
     m_regs.r0  = 0;
     m_regs.pc  = 0xBFC00000;
@@ -22,7 +17,11 @@ void CPU::init(const char* psxexe_path)
     memcpy(m_regs.out, m_regs.raw, sizeof(m_regs.out));
     
     //load program into ram
-    //m_mmu.copy_to_vm(exe.text_init(), exe.text_begin(), exe.text_size());
+	if(psxexe_path != nullptr)
+	{
+		PSXExecutable exe(psxexe_path);
+		m_mmu.copy_to_vm(exe.text_init(), exe.text_begin(), exe.text_size());
+	}
 
     //initialize bios
     File bios("scph1001.bin");
@@ -385,7 +384,7 @@ void CPU::COP0(CPUInstruction& ins)
         }
     }
 }
-void CPU::COP1(CPUInstruction& ins)
+void CPU::COP1(CPUInstruction&)
 {
     exception(Exception::COPUnusable);
 }
@@ -393,7 +392,7 @@ void CPU::COP2(CPUInstruction& ins)
 {
     UNIPLEMENTED_INSTRUCTION();
 }
-void CPU::COP3(CPUInstruction& ins)
+void CPU::COP3(CPUInstruction&)
 {
     exception(Exception::COPUnusable);
 }
@@ -503,11 +502,11 @@ void CPU::SWR(CPUInstruction& ins)
     
     m_mmu.write<u32>(aligned_address, value_to_write);
 }
-void CPU::LWC0(CPUInstruction& ins)
+void CPU::LWC0(CPUInstruction&)
 {
     exception(Exception::COPUnusable);
 }
-void CPU::LWC1(CPUInstruction& ins)
+void CPU::LWC1(CPUInstruction&)
 {
     exception(Exception::COPUnusable);
 }
@@ -515,15 +514,15 @@ void CPU::LWC2(CPUInstruction& ins)
 {
     UNIPLEMENTED_INSTRUCTION();
 }
-void CPU::LWC3(CPUInstruction& ins)
+void CPU::LWC3(CPUInstruction&)
 {
     exception(Exception::COPUnusable);
 }
-void CPU::SWC0(CPUInstruction& ins)
+void CPU::SWC0(CPUInstruction&)
 {
     exception(Exception::COPUnusable);
 }
-void CPU::SWC1(CPUInstruction& ins)
+void CPU::SWC1(CPUInstruction&)
 {
     exception(Exception::COPUnusable);
 }
@@ -531,7 +530,7 @@ void CPU::SWC2(CPUInstruction& ins)
 {
     UNIPLEMENTED_INSTRUCTION();
 }
-void CPU::SWC3(CPUInstruction& ins)
+void CPU::SWC3(CPUInstruction&)
 {
     exception(Exception::COPUnusable);
 }
@@ -584,12 +583,12 @@ void CPU::JALR(CPUInstruction& ins)
     
     m_regs.set(ins.rd(), ra);
 }
-void CPU::SYSCALL(CPUInstruction& ins)
+void CPU::SYSCALL(CPUInstruction&)
 {
     PRINT_INS("SYSCALL\n");
     exception(Exception::SystemCall);
 }
-void CPU::BREAK(CPUInstruction& ins)
+void CPU::BREAK(CPUInstruction&)
 {
     PRINT_INS("BREAK\n");
     exception(Exception::Break);

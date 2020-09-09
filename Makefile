@@ -13,18 +13,28 @@ FLG  = -Wall \
 	   -pedantic \
 	   -g \
 	   -O2 \
-	   -std=gnu++20 \
+	   -std=gnu++2a \
 	   -m32 \
 	   -Wno-initializer-overrides \
-	   -Wno-pragma-pack
-DEF  = -D__LNX__
+	   -Wno-pragma-pack \
+	   -Wno-deprecated-volatile \
+	   -Wno-gnu-designator \
+	   -Wno-c99-designator \
+	   -Wno-gnu-anonymous-struct \
+	   -Wno-language-extension-token \
+	   -Wno-nested-anon-types \
+	   -Wno-c99-extensions \
+	   -Wno-gnu-case-range \
+	   
+	   
+DEF  = -D__LNX__ -D_CRT_SECURE_NO_WARNINGS
 OUT  = build\r3000a
 
 all: $(OUT)
 
-OUT_SRCS := $(wildcard ./*.cpp)
-OUT_OBJS := $(patsubst ./%.cpp, ./%.o, $(OUT_SRCS))
-OUT_DEPS := $(patsubst ./%.cpp, ./%.d, $(OUT_SRCS))
+OUT_SRCS := $(wildcard *.cpp)
+OUT_OBJS := $(patsubst %.cpp, %.o, $(OUT_SRCS))
+OUT_DEPS := $(patsubst %.cpp, %.d, $(OUT_SRCS))
 
 $(OUT): $(OUT_OBJS)
 	$(CC) $^ $(LIBS) $(FLG) -o $(OUT)
@@ -34,8 +44,8 @@ $(OUT): $(OUT_OBJS)
 ./%.o: ./%.cpp
 	$(CC) $(FLG) $(DEF) $(INC) -MMD -c $< -o $@
 	
-clean:
-	rm -f $(OUT) $(OUT_OBJS) $(OUT_DEPS)
+clean:	
+	del /f $(OUT_OBJS) $(OUT_DEPS) $(OUT)
 	
 run: $(OUT)
 	$(OUT)
