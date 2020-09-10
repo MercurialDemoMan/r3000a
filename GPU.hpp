@@ -139,14 +139,62 @@ protected:
     //GP0 instructions
     void GP0_UNK(GPUInstruction&); // unknown instruction
     void GP0_NOP(GPUInstruction&); // unknown instruction (maybe nop?)
-    void GP0_CLRCACHE(GPUInstruction&); //clear cache
-    void GP0_TEXWIN(GPUInstruction&); // set texture window
+    void GP0_CLRCACHE(GPUInstruction&); // clear cache
+	void GP0_MONOTRI(GPUInstruction&); // draw monochrome triangle
+	void GP0_MONOTRANSTRI(GPUInstruction&); // draw transparent monochrome triangle
     void GP0_MONOQUAD(GPUInstruction&); // draw monochrome quadrilateral
-    void GP0_TEXBLENDQUAD(GPUInstruction&); // draw textured quadrilateral with color blending
+    void GP0_MONOTRANSQUAD(GPUInstruction&); // draw transparent monochrome quadrilateral
+	void GP0_TEXBLENDTRI(GPUInstruction&); // draw textured triangle with blending
+	void GP0_TEXRAWTRI(GPUInstruction&); // draw textured triangle
+	void GP0_TEXBLENDTRANSTRI(GPUInstruction&); // draw textured transparent triangle with blending
+	void GP0_TEXRAWTRANSTRI(GPUInstruction&); // draw textured transparent triangle
+	void GP0_TEXBLENDQUAD(GPUInstruction&); // draw textured quadrilateral with blending
+	void GP0_TEXRAWQUAD(GPUInstruction&); // draw textured quadrilateral
+	void GP0_TEXBLENDTRANSQUAD(GPUInstruction&); // draw textured transparent quad with blending
+	void GP0_TEXRAWTRANSQUAD(GPUInstruction&); // draw textured transparent quadrilateral
     void GP0_SHADTRI(GPUInstruction&);  // draw shaded triangle
+	void GP0_SHADTRANSTRI(GPUInstruction&); // draw shaded transparent triangle
     void GP0_SHADQUAD(GPUInstruction&); // draw shaded quadrilateral
-    void GP0_DRAWMODE(GPUInstruction&); // set GPU flags
-    void GP0_DRAWATL(GPUInstruction&);  // set drawing top left area
+    void GP0_SHADTRANSQUAD(GPUInstruction&); // draw shaded transparent quadrilateral
+	void GP0_SHADTEXBLENDTRI(GPUInstruction&); // draw shaded textured triangle with blending
+    void GP0_SHADTEXRAWTRI(GPUInstruction&); // draw shaded textured triangle
+    void GP0_SHADTEXBLENDQUAD(GPUInstruction&); // draw shaded textured quadrilateral with blending
+    void GP0_SHADTEXRAWQUAD(GPUInstruction&); // draw shaded textured quadrilateral
+	void GP0_MONOLINE(GPUInstruction&); // draw monochrome line
+    void GP0_MONOTRANSLINE(GPUInstruction&); // draw monochrome transparent line
+    void GP0_MONOPOLYLINE(GPUInstruction&); // draw monochrome multiline
+    void GP0_MONOTRANSPOLYLINE(GPUInstruction&);
+    void GP0_SHADLINE(GPUInstruction&);
+    void GP0_SHADTRANSLINE(GPUInstruction&);
+    void GP0_SHADPOLYLINE(GPUInstruction&);
+    void GP0_SHADTRANSPOLYLINE(GPUInstruction&);
+    void GP0_MONORECT(GPUInstruction&);
+    void GP0_MONOTRANSRECT(GPUInstruction&);
+    void GP0_MONORECT1X1(GPUInstruction&);
+    void GP0_MONOTRANSRECT1X1(GPUInstruction&);
+    void GP0_MONORECT8X8(GPUInstruction&);
+    void GP0_MONOTRANSRECT8X8(GPUInstruction&);
+    void GP0_MONORECT16X16(GPUInstruction&);
+    void GP0_MONOTRANSRECT16X16(GPUInstruction&);
+    void GP0_TEXBLENDRECT(GPUInstruction&);
+    void GP0_TEXRAWRECT(GPUInstruction&);
+    void GP0_TEXBLENDTRANSRECT(GPUInstruction&);
+    void GP0_TEXRAWTRANSRECT(GPUInstruction&);
+    void GP0_TEXBLENDRECT1X1(GPUInstruction&);
+    void GP0_TEXRAWRECT1X1(GPUInstruction&);
+    void GP0_TEXBLENDTRANSRECT1X1(GPUInstruction&);
+    void GP0_TEXRAWTRANSRECT1X1(GPUInstruction&);
+    void GP0_TEXBLENDRECT8X8(GPUInstruction&);
+    void GP0_TEXRAWRECT8X8(GPUInstruction&);
+    void GP0_TEXBLENDTRANSRECT8X8(GPUInstruction&);
+    void GP0_TEXRAWTRANSRECT8X8(GPUInstruction&);
+    void GP0_TEXBLENDRECT16X16(GPUInstruction&);
+    void GP0_TEXRAWRECT16X16(GPUInstruction&);
+    void GP0_TEXBLENDTRANSRECT16X16(GPUInstruction&);
+    void GP0_TEXRAWTRANSRECT16X16(GPUInstruction&);
+	void GP0_DRAWMODE(GPUInstruction&); // set GPU flags
+    void GP0_TEXWIN(GPUInstruction&); // set texture window
+	void GP0_DRAWATL(GPUInstruction&);  // set drawing top left area
     void GP0_DRAWABR(GPUInstruction&);  // set drawing bottom right area
     void GP0_DRAWOFF(GPUInstruction&);  // set drawing offset
     void GP0_MASKBIT(GPUInstruction&);  // set mask bit
@@ -172,10 +220,72 @@ protected:
         [0 ... 0xFF] = { &GPU::GP0_UNK, 1 },
         [0x00] = { &GPU::GP0_NOP, 1 },
         [0x01] = { &GPU::GP0_CLRCACHE, 1 },
+		
+		[0x20] = { &GPU::GP0_MONOTRI, 4 },
+		[0x22] = { &GPU::GP0_MONOTRANSTRI, 4 },
         [0x28] = { &GPU::GP0_MONOQUAD, 5 },
+		[0x2A] = { &GPU::GP0_MONOTRANSQUAD, 5 }, 
+		
+		[0x24] = { &GPU::GP0_TEXBLENDTRI, 7 },
+		[0x25] = { &GPU::GP0_TEXRAWTRI, 7 },
+		[0x26] = { &GPU::GP0_TEXBLENDTRANSTRI, 7 },
+		[0x27] = { &GPU::GP0_TEXRAWTRANSTRI, 7 },
         [0x2C] = { &GPU::GP0_TEXBLENDQUAD, 9 },
+		[0x2D] = { &GPU::GP0_TEXRAWQUAD, 9 },
+		[0x2E] = { &GPU::GP0_TEXBLENDTRANSQUAD, 9 },
+		[0x2F] = { &GPU::GP0_TEXRAWTRANSQUAD, 9 },
+		
         [0x30] = { &GPU::GP0_SHADTRI, 6 },
+		[0x32] = { &GPU::GP0_SHADTRANSTRI, 6 },
         [0x38] = { &GPU::GP0_SHADQUAD, 8 },
+		[0x3A] = { &GPU::GP0_SHADTRANSQUAD, 8 },
+		
+		[0x34] = { &GPU::GP0_SHADTEXBLENDTRI, 9 },
+		[0x36] = { &GPU::GP0_SHADTEXRAWTRI, 9 },
+		[0x3C] = { &GPU::GP0_SHADTEXBLENDQUAD, 12 },
+		[0x3E] = { &GPU::GP0_SHADTEXRAWQUAD, 12 },
+		
+		/**
+		 * TODO: undocumented commands 35, 37, 3D, 3F, 21, 23, 29, 2B, 31, 33, 39, 3B
+		 */
+		
+		[0x40] = { &GPU::GP0_MONOLINE, 3 },
+		[0x42] = { &GPU::GP0_MONOTRANSLINE, 3 },
+		[0x48] = { &GPU::GP0_MONOPOLYLINE, 3 },
+		[0x4A] = { &GPU::GP0_MONOTRANSPOLYLINE, 3 },
+		
+		[0x50] = { &GPU::GP0_SHADLINE, 4 },
+		[0x52] = { &GPU::GP0_SHADTRANSLINE, 4 },
+		[0x58] = { &GPU::GP0_SHADPOLYLINE, 4 },
+		[0x5A] = { &GPU::GP0_SHADTRANSPOLYLINE, 4 },
+		
+		[0x60] = { &GPU::GP0_MONORECT, 3 },
+		[0x62] = { &GPU::GP0_MONOTRANSRECT, 3 },
+		[0x68] = { &GPU::GP0_MONORECT1X1, 2 },
+		[0x6A] = { &GPU::GP0_MONOTRANSRECT1X1, 2 },
+		[0x70] = { &GPU::GP0_MONORECT8X8, 2 },
+		[0x72] = { &GPU::GP0_MONOTRANSRECT8X8, 2 },
+		[0x78] = { &GPU::GP0_MONORECT16X16, 2 },
+		[0x7A] = { &GPU::GP0_MONOTRANSRECT16X16, 2 },
+		
+		[0x64] = { &GPU::GP0_TEXBLENDRECT, 4 },
+		[0x65] = { &GPU::GP0_TEXRAWRECT, 4 },
+		[0x66] = { &GPU::GP0_TEXBLENDTRANSRECT, 4 },
+		[0x67] = { &GPU::GP0_TEXRAWTRANSRECT, 4 },
+		
+		[0x6C] = { &GPU::GP0_TEXBLENDRECT1X1, 3 },
+		[0x6D] = { &GPU::GP0_TEXRAWRECT1X1, 3 },
+		[0x6E] = { &GPU::GP0_TEXBLENDTRANSRECT1X1, 3 },
+		[0x6F] = { &GPU::GP0_TEXRAWTRANSRECT1X1, 3 },
+		[0x74] = { &GPU::GP0_TEXBLENDRECT8X8, 3 },
+		[0x75] = { &GPU::GP0_TEXRAWRECT8X8, 3 },
+		[0x76] = { &GPU::GP0_TEXBLENDTRANSRECT8X8, 3 },
+		[0x77] = { &GPU::GP0_TEXRAWTRANSRECT8X8, 3 },
+		[0x7C] = { &GPU::GP0_TEXBLENDRECT16X16, 3 },
+		[0x7D] = { &GPU::GP0_TEXRAWRECT16X16, 3 },
+		[0x7E] = { &GPU::GP0_TEXBLENDTRANSRECT16X16, 3 },
+		[0x7F] = { &GPU::GP0_TEXRAWTRANSRECT16X16, 3 },
+		
         [0xE1] = { &GPU::GP0_DRAWMODE, 1 },
         [0xE2] = { &GPU::GP0_TEXWIN, 1 },
         [0xE3] = { &GPU::GP0_DRAWATL, 1 },

@@ -239,6 +239,54 @@ void GPU::GP0_SHADQUAD(GPUInstruction&)
     
     m_renderer.draw_shaded_quad(vertices, colors);
 }
+void GPU::GP0_MONOTRI(GPUInstruction&) { } // draw monochrome triangle
+void GPU::GP0_MONOTRANSTRI(GPUInstruction&) { } // draw transparent monochrome triangle
+void GPU::GP0_MONOTRANSQUAD(GPUInstruction&) { } // draw transparent monochrome quadrilateral
+void GPU::GP0_TEXBLENDTRI(GPUInstruction&) { } // draw textured triangle with blending
+void GPU::GP0_TEXRAWTRI(GPUInstruction&) { } // draw textured triangle
+void GPU::GP0_TEXBLENDTRANSTRI(GPUInstruction&) { } // draw textured transparent triangle with blending
+void GPU::GP0_TEXRAWTRANSTRI(GPUInstruction&) { } // draw textured transparent triangle
+void GPU::GP0_TEXRAWQUAD(GPUInstruction&) { } // draw textured quadrilateral
+void GPU::GP0_TEXBLENDTRANSQUAD(GPUInstruction&) { } // draw textured transparent quad with blending
+void GPU::GP0_TEXRAWTRANSQUAD(GPUInstruction&) { } // draw textured transparent quadrilateral
+void GPU::GP0_SHADTRANSTRI(GPUInstruction&) { } // draw shaded transparent triangle
+void GPU::GP0_SHADTRANSQUAD(GPUInstruction&) { } // draw shaded transparent quadrilateral
+void GPU::GP0_SHADTEXBLENDTRI(GPUInstruction&) { } // draw shaded textured triangle with blending
+void GPU::GP0_SHADTEXRAWTRI(GPUInstruction&) { } // draw shaded textured triangle
+void GPU::GP0_SHADTEXBLENDQUAD(GPUInstruction&) { } // draw shaded textured quadrilateral with blending
+void GPU::GP0_SHADTEXRAWQUAD(GPUInstruction&) { } // draw shaded textured quadrilateral
+void GPU::GP0_MONOLINE(GPUInstruction&) { } // draw monochrome line
+void GPU::GP0_MONOTRANSLINE(GPUInstruction&) { } // draw monochrome transparent line
+void GPU::GP0_MONOPOLYLINE(GPUInstruction&) { } // draw monochrome multiline
+void GPU::GP0_MONOTRANSPOLYLINE(GPUInstruction&) { }
+void GPU::GP0_SHADLINE(GPUInstruction&) { }
+void GPU::GP0_SHADTRANSLINE(GPUInstruction&) { }
+void GPU::GP0_SHADPOLYLINE(GPUInstruction&) { }
+void GPU::GP0_SHADTRANSPOLYLINE(GPUInstruction&) { }
+void GPU::GP0_MONORECT(GPUInstruction&) { }
+void GPU::GP0_MONOTRANSRECT(GPUInstruction&) { }
+void GPU::GP0_MONORECT1X1(GPUInstruction&) { }
+void GPU::GP0_MONOTRANSRECT1X1(GPUInstruction&) { }
+void GPU::GP0_MONORECT8X8(GPUInstruction&) { }
+void GPU::GP0_MONOTRANSRECT8X8(GPUInstruction&) { }
+void GPU::GP0_MONORECT16X16(GPUInstruction&) { }
+void GPU::GP0_MONOTRANSRECT16X16(GPUInstruction&) { }
+void GPU::GP0_TEXBLENDRECT(GPUInstruction&) { }
+void GPU::GP0_TEXRAWRECT(GPUInstruction&) { }
+void GPU::GP0_TEXBLENDTRANSRECT(GPUInstruction&) { }
+void GPU::GP0_TEXRAWTRANSRECT(GPUInstruction&) { }
+void GPU::GP0_TEXBLENDRECT1X1(GPUInstruction&) { }
+void GPU::GP0_TEXRAWRECT1X1(GPUInstruction&) { }
+void GPU::GP0_TEXBLENDTRANSRECT1X1(GPUInstruction&) { }
+void GPU::GP0_TEXRAWTRANSRECT1X1(GPUInstruction&) { }
+void GPU::GP0_TEXBLENDRECT8X8(GPUInstruction&) { }
+void GPU::GP0_TEXRAWRECT8X8(GPUInstruction&) { }
+void GPU::GP0_TEXBLENDTRANSRECT8X8(GPUInstruction&) { }
+void GPU::GP0_TEXRAWTRANSRECT8X8(GPUInstruction&) { }
+void GPU::GP0_TEXBLENDRECT16X16(GPUInstruction&) { }
+void GPU::GP0_TEXRAWRECT16X16(GPUInstruction&) { }
+void GPU::GP0_TEXBLENDTRANSRECT16X16(GPUInstruction&) { }
+void GPU::GP0_TEXRAWTRANSRECT16X16(GPUInstruction&) { }
 void GPU::GP0_DRAWMODE(GPUInstruction& ins)
 {
     m_tex_page_base_x   = (ins >> 0) & 0b1111;
